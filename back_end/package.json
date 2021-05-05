@@ -19,7 +19,9 @@
     "type-graphql": "^0.17.5"
   },
   "scripts": {
-    "start": "nodemon --exec ts-node src/server.ts",
+    "start": "ts-node src/server.ts",
+    "dev": "nodemon --exec ts-node src/server.ts",
     "build": "tsc"
   }
+  
 }

@@ -4,6 +4,7 @@ import { ApolloServer } from "apollo-server-express";
 import { buildSchema } from "type-graphql";
 import { UserResolver } from "./resolvers/UserResolver";
 import mongoose from "mongoose";
+import { CarResolver } from "./resolvers/CarResolver";
 
 (async () => {
   const app = express();
@@ -18,7 +19,7 @@ import mongoose from "mongoose";
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [UserResolver],
+      resolvers: [UserResolver, CarResolver],
       validate: true,
     }),
     context: ({ req, res }) => ({ req, res }),

@@ -1,4 +1,5 @@
 import { Field, ObjectType } from "type-graphql";
+import Price from "./Price";
 
 @ObjectType()
 export default class Car {
@@ -6,21 +7,30 @@ export default class Car {
   id: string;
 
   @Field()
-  finnkdoe: string;
+  code: string;
 
   @Field()
-  forsidebilde: string;
+  picture: string;
 
   @Field()
-  modellnavn: string;
+  model_name: string;
 
   @Field()
-  årsmodell: number;
+  year_model: number;
 
   @Field()
-  kilometerstand: number;
+  mileage: number;
 
-  constructor(username: string, password: string) {
-    
+  @Field(() => [Price])
+  prices:Price[]
+
+  constructor(id:string, code:string, picture:string, model_name: string, year_model:number, mileage:number, prices:Price[]) {
+    this.id = id; 
+    this.code = code; 
+    this.picture = picture; 
+    this.model_name = model_name; 
+    this.year_model = year_model; 
+    this.mileage = mileage; 
+    this.prices = prices; 
   }
 }
