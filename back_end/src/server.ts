@@ -5,9 +5,11 @@ import { buildSchema } from "type-graphql";
 import { UserResolver } from "./resolvers/UserResolver";
 import mongoose from "mongoose";
 import { CarResolver } from "./resolvers/CarResolver";
+import cors from "cors";
 
 (async () => {
   const app = express();
+  app.use(cors());
 
   await mongoose
     .connect("mongodb://127.0.0.1:27017/Cars", {
@@ -26,7 +28,7 @@ import { CarResolver } from "./resolvers/CarResolver";
   });
 
   apolloServer.applyMiddleware({ app, cors: false });
-  const PORT = process.env.PORT || 4000;
+  const PORT = process.env.PORT || 5000;
 
   app.listen(PORT, () => {
     console.log(`server started at http://localhost:${PORT}/graphql`);

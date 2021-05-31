@@ -14,11 +14,17 @@ const LoginCardContainer = styled.div`
   border-radius: 8px;
 `;
 
+const Flex = styled.div`
+  display: flex;
+  margin-top: 1rem;
+`;
+
 interface Props {
-  createUser: (username: string, password: string) => boolean;
+  createUser: (username: string, password: string) => void;
+  goBack: () => void;
 }
 
-const NewUserCard = ({ createUser }: Props) => {
+const NewUserCard = ({ createUser, goBack }: Props) => {
   const [username, setUsername] = useState('');
   const [password1, setPassword1] = useState('');
   const [password2, setPassword2] = useState('');
@@ -35,12 +41,10 @@ const NewUserCard = ({ createUser }: Props) => {
   };
 
   const onClick = () => {
-    if (passwordCheck) {
-      if (createUser(username, password1) === false) {
-        alert('Fyfaen Aleeks');
-      }
-    } else {
+    if (!passwordCheck) {
       alert('Fyfaen Aleeks, passordene matcher ikke');
+    } else {
+      createUser(username, password1);
     }
   };
 
@@ -71,14 +75,24 @@ const NewUserCard = ({ createUser }: Props) => {
           onChange={onChangePassword2}
         />
         {passwordCheck == false && <a>Passwords do not match</a>}
-        <Button
-          style={{ width: '100%', height: '50px' }}
-          variant="contained"
-          color="secondary"
-          onClick={onClick}
-        >
-          CREATE NEW USER
-        </Button>
+        <Flex>
+          <Button
+            style={{ width: '70%', height: '50px', marginRight: '1rem' }}
+            variant="contained"
+            color="secondary"
+            onClick={onClick}
+          >
+            CREATE NEW USER
+          </Button>{' '}
+          <Button
+            style={{ width: '30%', height: '50px' }}
+            variant="contained"
+            color="secondary"
+            onClick={goBack}
+          >
+            GO BACK
+          </Button>
+        </Flex>
       </form>
     </LoginCardContainer>
   );

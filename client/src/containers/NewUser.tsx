@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router';
 import styled from 'styled-components';
 import NewUserCard from '../components/NewUserCard';
+import { useQuery, gql, useMutation } from '@apollo/client';
+import { GET_USER_NAMES } from '../graphQL/Queries';
+import { CREATE_USER } from '../graphQL/Mutations';
 
 const NewUsernContainer = styled.div`
   width: 100%;
@@ -22,18 +25,47 @@ const NewUsernContainer = styled.div`
   ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 `;
 
+interface User {
+  username: string;
+  __typename: string;
+}
+
+const isUsernameInUse = (username: string, usernames: User[]): boolean => {
+  const user = usernames.filter(
+    (name) => name.username.toUpperCase() == username.toUpperCase()
+  );
+  if (user.length >= 1) return true;
+  return false;
+};
+
 const NewUser = () => {
   const history = useHistory();
+  const { loading, data } = useQuery(GET_USER_NAMES);
+  const [createUser] = useMutation(CREATE_USER);
 
-  const createUser = (username:string, password:string):boolean => {
-    console.log(username + password); 
-    history.push("/");  
-    return true;  
-  }
+  const create = async (username: string, password: string) => {
+    const usernames: User[] = await data.getUsers;
+    if (!isUsernameInUse(username, usernames)) {
+      createUser({
+        variables: {
+          username: username,
+          password: password,
+        },
+      }).then((data) => {
+        if (data.data.createUser) history.push('/');
+      });
+    } else {
+      alert('Brukernavnet er allerede i bruk');
+    }
+  };
+
+  const goBack = () => {
+    history.push('/');
+  };
 
   return (
     <NewUsernContainer>
-      <NewUserCard createUser = {createUser}></NewUserCard>
+      <NewUserCard goBack={goBack} createUser={create}></NewUserCard>
     </NewUsernContainer>
   );
 };

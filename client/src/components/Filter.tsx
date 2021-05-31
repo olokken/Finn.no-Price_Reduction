@@ -3,8 +3,8 @@ import { Slider, TextField } from '@material-ui/core';
 import styled from 'styled-components';
 
 const SliderContainer = styled.div`
-  width: 100%;
-  margin-top:'20px'; 
+  width: 20%;
+  min-width: 20rem;
 `;
 
 interface Props {
@@ -18,19 +18,19 @@ const Filter = ({ minValue, maxValue, headline }: Props) => {
 
   const handleChange = (event: any, newValue: number | number[]) => {
     setValue(newValue as number[]);
-    console.log(value); 
+    console.log(value);
   };
 
   const onChangeValue = (event: ChangeEvent<HTMLInputElement>) => {
     const newValue = [parseInt(event.target.value), value[1]];
     setValue(newValue);
-    console.log(value); 
+    console.log(value);
   };
 
   const onChangeValue2 = (event: ChangeEvent<HTMLInputElement>) => {
     const newValue = [value[0], parseInt(event.target.value)];
     setValue(newValue);
-    console.log(value); 
+    console.log(value);
   };
 
   return (
