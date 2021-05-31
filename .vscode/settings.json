@@ -1,9 +1,8 @@
 {
-    "python.pythonPath": "/usr/local/bin/python3",
-    "[html]": {
+  "python.pythonPath": "/usr/local/bin/python3",
+  "[html]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
-    },
-
+  },
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
