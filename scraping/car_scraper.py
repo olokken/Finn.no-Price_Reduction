@@ -4,23 +4,38 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from models import Price, Car
-import datetime
+from car_service import post_car, get_car, add_price
+import time
 
-def handleCar(car): 
-  json_string = json.dumps(car.__dict__)
-  print(json_string)
+def handle_car(car): 
+  db_car = get_car(car.code)
+  if(db_car):
+    lastPrice = db_car['prices'][-1]['sum']
+    currentSum = car.prices[0].sum
+    if(lastPrice != currentSum):
+      add_price(car.code, car.prices[0])
+  else:
+    post_car(car)
 
-def handleInfo(title, info, picture): 
+
+
+def handle_info(title, info, picture): 
   year_model = int(info[0])
   mileage = int(info[1].split("k")[0].replace(" ", ""))
-  car_price = int(info[2].split("k")[0].replace(" ", ""))
-  prices = [Price(car_price, datetime.datetime.now())]
-  handleCar(Car(title.get_attribute("id"), title.text, year_model, mileage, prices, picture))
+  try: 
+    car_price = int(info[2].split("k")[0].replace(" ", ""))
+    isSold = False
+  except Exception: 
+    car_price = 0
+    isSold = True
+  prices = [Price(car_price, time.time())]
+  handle_car(Car(title.get_attribute("id"), title.text, year_model, mileage, prices, isSold, picture))
+
 
 def scrape_cars():
   PATH = "/Users/olelokken/DEV/Finn.no-Price_Reduction/scraping/chromedriver"
   driver = webdriver.Chrome(PATH)
-  driver.get("https://www.finn.no/car/used/search.html?engine_fuel=0%2F2&location=20016&page=12&price_to=70000&sort=PUBLISHED_DESC")
+  driver.get("https://www.finn.no/car/used/search.html?engine_fuel=0%2F2&location=20016&price_to=70000&sort=PUBLISHED_DESC")
   while True:
     element_div = WebDriverWait(driver, 5).until(
           EC.presence_of_element_located((By.XPATH, '//*[@id="page-results"]/div[2]'))
@@ -30,7 +45,7 @@ def scrape_cars():
       picture = article.find_element_by_tag_name('img').screenshot_as_base64
       title = article.find_element_by_tag_name('a')
       info = article.find_element_by_class_name('ads__unit__content__keys').text.split('\n')
-      handleInfo(title, info, picture)
+      handle_info(title, info, picture)
     try:
       element = WebDriverWait(driver, 5).until(
           EC.presence_of_element_located((By.XPATH, "/html/body/div[2]/main/div[3]/div/nav[1]/a[3]"))

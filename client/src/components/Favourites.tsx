@@ -1,8 +1,10 @@
-import { Drawer, makeStyles } from '@material-ui/core';
+import { Button, Drawer, makeStyles } from '@material-ui/core';
 import React from 'react';
 
 interface Props {
   favourites: any[];
+  open: boolean;
+  close: () => void;
 }
 
 const useStyles = makeStyles({
@@ -12,17 +14,18 @@ const useStyles = makeStyles({
   },
 });
 
-const Favourites = ({ favourites }: Props) => {
+const Favourites = ({ favourites, open, close }: Props) => {
   const classes = useStyles();
   return (
     <Drawer
       classes={{
         paper: classes.drawerPaper,
       }}
-      open
+      open={open}
       variant="permanent"
       anchor="right"
     >
+      <Button onClick={close}>Lukk favoritter</Button>
       <h1> Dine favoritter </h1>
     </Drawer>
   );

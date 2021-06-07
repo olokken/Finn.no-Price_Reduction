@@ -16,7 +16,7 @@ interface Props {
 
 const useStyles = makeStyles({
   root: {
-    padding:'0.5rem',
+    padding: '0.5rem',
     maxWidth: 300,
     maxHeight: 400,
     minWidth: '30%',
@@ -44,12 +44,12 @@ const CarCard = ({ car }: Props) => {
     <Card className={classes.root}>
       <CardActionArea
         style={{ width: '100%', height: '100%' }}
-        onClick={() => console.log()}
+        onClick={() => console.log(car.picture)}
       >
         <CardMedia
           component="img"
           className={classes.media}
-          image={picture()}
+          image={`data:image/png;base64, ${car.picture}`}
         />
         <CardContent>
           <Typography

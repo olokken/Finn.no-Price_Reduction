@@ -28,6 +28,7 @@ const MainPage = () => {
   const [cars, setCars] = useState<Car[]>([]);
   const { user } = useContext(UserContext);
   const { loading, data } = useQuery(GET_CARS);
+  const [openFavorites, setOpenFavorites] = useState<boolean>(false);
 
   const loadCars = async () => {
     if (data) {
@@ -49,7 +50,11 @@ const MainPage = () => {
       <ContentContainer>
         <SideBar></SideBar>
         <CarGrid cars={cars}></CarGrid>
-        <Favourites favourites={cars}></Favourites>
+        <Favourites
+          open={openFavorites}
+          close={() => setOpenFavorites(false)}
+          favourites={cars}
+        ></Favourites>
       </ContentContainer>
     </MainPageContainer>
   );
