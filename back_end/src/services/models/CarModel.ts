@@ -3,29 +3,29 @@ import * as mongoose from "mongoose";
 
 export interface ICar extends mongoose.Document {
   _id: string;
-  finnkode: string;
-  forsidebilde: string;
-  modellnavn: string;
-  årsmodell: number;
-  kilometerstand: number;
-  priser: [{
-    sum:number,
-    dato:Date
-  }];
+  code: string;
+  picture: string;
+  modelName: string;
+  yearModel: number;
+  mileage: number;
+  isSold: boolean;
+  prices: [
+    {
+      sum: number;
+      date: number;
+    }
+  ];
 }
 
-export const CarSchema = new mongoose.Schema(
-  {
-    id: { type: String, required: true },
-    finnkode: { type: String, required: true },
-    forsidebilde: { type: String, required: true },
-    modellnavn: { type: String, required: true },
-    årsmodell: { type: Number, required: true },
-    kilometerstand: { type: Number, required: true },
-    priser: { type: [], required: false }
-  },
-);
+export const CarSchema = new mongoose.Schema({
+  id: { type: String, required: true },
+  code: { type: String, required: true },
+  picture: { type: String, required: true },
+  modelName: { type: String, required: true },
+  yearModel: { type: Number, required: true },
+  mileage: { type: Number, required: true },
+  prices: { type: [], required: false },
+});
 
-const CarModel = mongoose.model<ICar>("Tesla", CarSchema, "Tesla");
+const CarModel = mongoose.model<ICar>("Cars", CarSchema, "Cars");
 export default CarModel;
-

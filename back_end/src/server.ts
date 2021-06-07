@@ -12,7 +12,7 @@ import cors from "cors";
   app.use(cors());
 
   await mongoose
-    .connect("mongodb://127.0.0.1:27017/Cars", {
+    .connect("mongodb://127.0.0.1:27017/finn_price_reduction", {
       useUnifiedTopology: true,
       useNewUrlParser: true,
     })

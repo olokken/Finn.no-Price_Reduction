@@ -5,9 +5,9 @@ export default class Price {
   @Field()
   sum: number;
   @Field()
-  date: Date;
+  date: number;
 
-  constructor(sum: number, date: Date) {
+  constructor(sum: number, date: number) {
     this.sum = sum;
     this.date = date;
   }
