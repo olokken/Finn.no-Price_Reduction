@@ -1,6 +1,4 @@
-Eget prosjekt der jeg hadde et scraping-program som brukte Selenium til å 
-sjekke prisen til flere interessante biler på finn.no, og deretter lagre 
-info om bilene i en MongoDB database. 
-Mappen med scraping-koden er dessverre forsvunnet. 
-Det som er igjen er en aphollo-express server som henter ut bilene fra databasen
-og sender informasjonen videre til klienten. 
+Bruker selenium til å scrape biler på finn.no og lagrer disse i en mongoDB database.
+Scrapingen sjekker om prisen på bilene er gått opp eller ned fra tideligere lagrede priser.
+
+Backend består av en node express-aphollo server, som bruker type-graphql til å sende informasjon om bilene til en react-frontend. 
