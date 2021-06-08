@@ -36,6 +36,7 @@ const Login = () => {
 
   const onLogin = () => {
     if (data) {
+      localStorage.setItem('id', data.login.id);
       setUser(data.login.id);
       history.push('/mainPage');
     }

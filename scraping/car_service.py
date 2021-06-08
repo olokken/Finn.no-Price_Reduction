@@ -19,5 +19,9 @@ def post_car(car):
 
 def add_price(code, price):
   collection = set_up()
-  collection.update_one({'code':code}, {'$push':{'prices':json.dumps(price.__dict__)}})
+  collection.update_one({'code':code}, {'$push':{'prices':json.loads(json.dumps(price.__dict__))}})
+
+def set_sold(code):
+  collection = set_up()
+  collection.update_one({'code':code}, {'$set':{'isSold':True}})
 

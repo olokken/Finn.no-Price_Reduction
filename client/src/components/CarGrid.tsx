@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { GridList } from '@material-ui/core';
+import { GridList, Modal } from '@material-ui/core';
 import Car from '../interfaces/Car';
 import styled from 'styled-components';
 import CarCard from './CarCard';
@@ -8,7 +8,7 @@ import Pageination from '@material-ui/lab/Pagination';
 const Container = styled.div`
   padding: 1rem;
   padding-bottom: 3rem;
-  width: 60%;
+  width: 100%;
 `;
 
 interface Props {

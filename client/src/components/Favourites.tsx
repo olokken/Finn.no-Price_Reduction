@@ -14,7 +14,7 @@ const useStyles = makeStyles({
   },
 });
 
-const Favourites = ({ favourites, open, close }: Props) => {
+const Favourites = ({ favourites, open }: Props) => {
   const classes = useStyles();
   return (
     <Drawer
@@ -22,10 +22,9 @@ const Favourites = ({ favourites, open, close }: Props) => {
         paper: classes.drawerPaper,
       }}
       open={open}
-      variant="permanent"
+      variant="persistent"
       anchor="right"
     >
-      <Button onClick={close}>Lukk favoritter</Button>
       <h1> Dine favoritter </h1>
     </Drawer>
   );
