@@ -22,15 +22,23 @@ export default class Car {
   mileage: number;
 
   @Field(() => [Price])
-  prices:Price[]
+  prices: Price[];
 
-  constructor(id:string, code:string, picture:string, model_name: string, year_model:number, mileage:number, prices:Price[]) {
-    this.id = id; 
-    this.code = code; 
-    this.picture = picture; 
-    this.model_name = model_name; 
-    this.year_model = year_model; 
-    this.mileage = mileage; 
-    this.prices = prices; 
+  constructor(
+    id: string,
+    code: string,
+    picture: string,
+    model_name: string,
+    year_model: number,
+    mileage: number,
+    prices: Price[]
+  ) {
+    this.id = id;
+    this.code = code;
+    this.picture = picture;
+    this.model_name = model_name;
+    this.year_model = year_model;
+    this.mileage = mileage;
+    this.prices = prices;
   }
 }

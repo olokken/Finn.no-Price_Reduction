@@ -2,7 +2,7 @@ import { Field, ObjectType } from "type-graphql";
 
 @ObjectType()
 export default class Person {
-  @Field({nullable:true})
+  @Field({ nullable: true })
   id?: string;
 
   @Field()
@@ -11,9 +11,18 @@ export default class Person {
   @Field()
   password: string;
 
-  constructor(username: string, password: string, id?: string) {
+  @Field(() => [String])
+  favorites: string[];
+
+  constructor(
+    username: string,
+    password: string,
+    favorites: string[],
+    id?: string
+  ) {
     this.username = username;
     this.password = password;
+    this.favorites = favorites;
     this.id = id;
   }
 }

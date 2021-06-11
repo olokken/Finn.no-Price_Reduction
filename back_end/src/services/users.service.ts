@@ -8,6 +8,7 @@ const createUser = async (user: User) => {
 const getUsers = async () => {
   const users = await UserModel.find().exec();
   return users.map((user) => {
+    console.log(user.id);
     return new User(user.username, user.password, user._id);
   });
 };
@@ -19,14 +20,6 @@ const getUser = async (id: string): Promise<User | null> => {
   }
   return null;
 };
-
-/*const getUserByName = async (username: string): Promise<User | null> => {
-  const user: IUser[] = await UserModel.find({ username: username }).exec();
-  if (user) {
-    return new User(user[0].username, user[0].password, user[0]._id);
-  }
-  return null;
-};*/
 
 const getUserByUsernameAndPassword = async (
   username: string,

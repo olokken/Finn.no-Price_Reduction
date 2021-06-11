@@ -12,6 +12,7 @@ import Beetle from '../assets/Beetle.jpeg';
 import styled from 'styled-components';
 interface Props {
   car: Car;
+  onClick: (car: Car) => void;
 }
 
 const useStyles = makeStyles({
@@ -33,7 +34,7 @@ const Flex = styled.div`
   justify-content: center;
 `;
 
-const CarCard = ({ car }: Props) => {
+const CarCard = ({ car, onClick }: Props) => {
   const classes = useStyles();
 
   const picture = (): any => {
@@ -44,12 +45,13 @@ const CarCard = ({ car }: Props) => {
     <Card className={classes.root}>
       <CardActionArea
         style={{ width: '100%', height: '100%' }}
-        onClick={() => console.log(car.picture)}
+        onClick={() => onClick(car)}
       >
         <CardMedia
           component="img"
           className={classes.media}
-          image={`data:image/png;base64, ${car.picture}`}
+          //image={`data:image/png;base64, ${}}
+          image={car.picture}
         />
         <CardContent>
           <Typography
@@ -67,7 +69,7 @@ const CarCard = ({ car }: Props) => {
             color="textSecondary"
             component="h4"
           >
-            PRIS: {car.prices[car.prices.length - 1].sum}kr
+            PRIS: {car.prices[car.prices.length - 1].sum.toLocaleString()}kr
           </Typography>
           <Typography
             style={{ textAlign: 'center', paddingBottom: '0.2rem' }}
@@ -75,7 +77,7 @@ const CarCard = ({ car }: Props) => {
             color="textSecondary"
             component="h4"
           >
-            Kilometerstand: {car.mileage}km
+            Kilometerstand: {car.mileage.toLocaleString()}km
           </Typography>
           <Typography
             style={{ textAlign: 'center' }}

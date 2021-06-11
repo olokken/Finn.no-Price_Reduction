@@ -22,9 +22,14 @@ export class UserResolver {
     return UserService.getUsers();
   }
 
+  @Query(() => Boolean)
+  sheesh() {
+    return true;
+  }
+
   @Query(() => User)
   async login(@Arg("info", () => UserInput) info: UserInput) {
-    let user: User = new User("", "", "");
+    let user: User = new User("", "", [], "");
     await UserService.getUserByUsernameAndPassword(
       info.username,
       info.password
@@ -36,7 +41,7 @@ export class UserResolver {
 
   @Mutation(() => Boolean)
   async createUser(@Arg("info", () => UserInput) info: UserInput) {
-    const user: User = new User(info.username, info.password);
+    const user: User = new User(info.username, info.password, []);
     try {
       await UserService.createUser(user);
       return true;

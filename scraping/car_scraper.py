@@ -47,7 +47,7 @@ def scrape_cars():
     articles = element_div.find_elements_by_tag_name('article')
     for article in articles:
       try:  
-        picture = article.find_element_by_tag_name('img').screenshot_as_base64
+        picture = article.find_element_by_tag_name('img').get_attribute("src")
         title = article.find_element_by_tag_name('a')
         info = article.find_element_by_class_name('ads__unit__content__keys').text.split('\n')
         handle_info(title, info, picture)

@@ -1,6 +1,7 @@
 import React, { ChangeEvent, KeyboardEventHandler } from 'react';
 import { TextField, Button } from '@material-ui/core';
 import styled from 'styled-components';
+import { useHistory } from 'react-router';
 
 const LoginCardContainer = styled.div`
   width: 30rem;
@@ -16,7 +17,7 @@ const LoginCardContainer = styled.div`
 
 interface Props {
   onLogin: () => void;
-  onNewUser: () => void; 
+  onNewUser: () => void;
   onChangeUsername: (e: ChangeEvent<HTMLInputElement>) => void;
   onChangePassword: (e: ChangeEvent<HTMLInputElement>) => void;
   onKeyDown: (e: any) => void;
@@ -29,6 +30,7 @@ const LoginCard = ({
   onChangePassword,
   onKeyDown,
 }: Props) => {
+  const history = useHistory();
   return (
     <LoginCardContainer>
       <h2>LOG IN</h2>
@@ -50,7 +52,7 @@ const LoginCard = ({
         />
       </form>
       <Button
-        style={{ width: '100%', height:'50px' }}
+        style={{ width: '100%', height: '50px' }}
         variant="contained"
         color="secondary"
         onClick={onLogin}
@@ -58,12 +60,19 @@ const LoginCard = ({
         LOG IN
       </Button>
       <Button
-        style={{ width: '100%', marginTop:'15px', height:'50px'}}
+        style={{ width: '100%', marginTop: '15px', height: '50px' }}
         variant="contained"
         color="secondary"
         onClick={onNewUser}
       >
         CREATE NEW USER
+      </Button>
+      <Button
+        style={{ width: '100%', marginTop: '15px', height: '50px' }}
+        variant="contained"
+        onClick={() => history.push('/mainPage')}
+      >
+        Continue as guest
       </Button>
     </LoginCardContainer>
   );
