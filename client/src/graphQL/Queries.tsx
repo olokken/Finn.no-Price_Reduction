@@ -8,11 +8,10 @@ export const GET_USER_NAMES = gql`
   }
 `;
 
-export const LOGIN = gql`
-  query login($username: String!, $password: String!) {
-    login(info: { username: $username, password: $password }) {
-      id
-      username
+export const GET_FAVORITES = gql`
+  query getUser($id: String!) {
+    getUser(id: $id) {
+      favorites
     }
   }
 `;

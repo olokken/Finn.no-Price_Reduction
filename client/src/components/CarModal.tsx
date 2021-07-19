@@ -1,48 +1,14 @@
-import {
-  createStyles,
-  Grid,
-  makeStyles,
-  Modal,
-  Theme,
-} from '@material-ui/core';
-import { ProvidedRequiredArgumentsOnDirectivesRule } from 'graphql/validation/rules/ProvidedRequiredArgumentsRule';
-import React from 'react';
+import { Grid, Button } from '@material-ui/core';
+import { useSelector } from 'react-redux';
+import React, { Fragment } from 'react';
 import styled from 'styled-components';
 import Car from '../interfaces/Car';
-
-function rand() {
-  return Math.round(Math.random() * 20) - 10;
-}
+import { RootState } from '../reducers/RootReducer';
+import { Modal } from './Modal';
 
 const Flex = styled.div`
   display: flex;
 `;
-
-function getModalStyle() {
-  const top = 20 + rand();
-  const left = 20 + rand();
-
-  return {
-    top: `${top}%`,
-    left: `${left}%`,
-    transform: `translate(-${top}%, -${left}%)`,
-  };
-}
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    paper: {
-      position: 'absolute',
-      justifyContent: 'center',
-      maxHeight: 'auto',
-      marginTop: '2rem',
-      backgroundColor: theme.palette.background.paper,
-      border: '2px solid #000',
-      boxShadow: theme.shadows[5],
-      padding: theme.spacing(2, 4, 3),
-    },
-  })
-);
 
 const Container = styled.div`
   display: flex;
@@ -54,32 +20,50 @@ const Container = styled.div`
   max-height: 100%;
   overflow-y: scroll;
 `;
+
 interface Props {
   open: boolean;
   close: () => void;
   car: Car;
+  addFavorite: (code: string) => void;
+  removeFavorite: (code: string) => void;
 }
 
-function CarModal({ open, close, car }: Props) {
-  const classes = useStyles();
-  const [modalStyle] = React.useState(getModalStyle);
-  const handleClose = () => {
-    close();
+function CarModal({ open, close, car, addFavorite, removeFavorite }: Props) {
+  const favorites = useSelector((state: RootState) => state.favorites);
+
+  const checkFavorite = (): boolean => {
+    const check: string[] = favorites.filter((fav: any) => fav == car.code);
+    if (check.length >= 1) {
+      return true;
+    }
+    return false;
   };
 
+  const removeButton: React.ReactNode = !checkFavorite() ? (
+    <Button style={{ width: '95%' }} onClick={() => addFavorite(car.code)}>
+      Legg til som favoritt
+    </Button>
+  ) : (
+    <Button style={{ width: '95%' }} onClick={() => removeFavorite(car.code)}>
+      Fjern som favoritt
+    </Button>
+  );
+
   const body = (
-    <Container style={modalStyle} className={classes.paper}>
+    <Fragment>
       <img
         style={{ width: '30rem', maxHeight: '23rem' }}
         src={car.picture}
       ></img>
       <h3>{car.model_name}</h3>
+      {removeButton}
       <Grid container justify="space-between">
-        <Grid item>
+        <Grid item xs={12} md={6}>
           <h4>Årsmodell: {car.year_model}</h4>
           <h4>Kilometerstand: {car.mileage.toLocaleString()}</h4>
         </Grid>
-        <Grid>
+        <Grid item xs={12} md={6}>
           {car.prices.map((price, index) => (
             <Flex key={index}>
               <h3>{new Date(price.date).toISOString().slice(0, 10)}:&nbsp;</h3>
@@ -88,16 +72,17 @@ function CarModal({ open, close, car }: Props) {
           ))}
         </Grid>
       </Grid>
-    </Container>
+      <Button
+        style={{ backgroundColor: 'blue', color: 'white' }}
+        onClick={() => window.open(`https://www.finn.no/${car.code}`)}
+      >
+        Gå til finn-annonse
+      </Button>
+    </Fragment>
   );
 
   return (
-    <Modal
-      open={open}
-      onClose={handleClose}
-      aria-labelledby="simple-modal-title"
-      aria-describedby="simple-modal-description"
-    >
+    <Modal open={open} onClose={close}>
       {body}
     </Modal>
   );

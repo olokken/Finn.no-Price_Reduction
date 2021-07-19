@@ -1,6 +1,18 @@
-import { Arg, Field, InputType, Mutation, Query, Resolver } from "type-graphql";
+import {
+  Arg,
+  Ctx,
+  Field,
+  InputType,
+  Mutation,
+  ObjectType,
+  Query,
+  Resolver,
+  UseMiddleware,
+} from "type-graphql";
 import User from "../entity/User";
 import { UserService } from "../services/users.service";
+import { MyContext } from "src/MyContext";
+import { createAcesstoken, createRefreshToken, isAuth } from "../utils/auth";
 
 @InputType()
 class UserInput {
@@ -8,6 +20,14 @@ class UserInput {
   username: string;
   @Field()
   password: string;
+}
+
+@ObjectType()
+class LoginResponse {
+  @Field()
+  accessToken: string;
+  @Field()
+  id: string;
 }
 
 @Resolver()
@@ -22,21 +42,26 @@ export class UserResolver {
     return UserService.getUsers();
   }
 
-  @Query(() => Boolean)
-  sheesh() {
+  @Mutation(() => Boolean)
+  @UseMiddleware(isAuth)
+  isVerified() {
     return true;
   }
 
-  @Query(() => User)
-  async login(@Arg("info", () => UserInput) info: UserInput) {
-    let user: User = new User("", "", [], "");
-    await UserService.getUserByUsernameAndPassword(
-      info.username,
-      info.password
-    ).then((data) => {
-      user = new User(data.username, data.password, data.id);
-    });
-    return user;
+  @Mutation(() => LoginResponse)
+  async login(
+    @Arg("info", () => UserInput) info: UserInput,
+    @Ctx() { res }: MyContext
+  ) {
+    const user = await UserService.login(info.username, info.password);
+    if (user) {
+      res.cookie("rt", createRefreshToken(user.id));
+      return {
+        accessToken: createAcesstoken(user.id),
+        id: user.id,
+      };
+    }
+    return null;
   }
 
   @Mutation(() => Boolean)
@@ -48,5 +73,20 @@ export class UserResolver {
     } catch {
       return false;
     }
+  }
+
+  @Mutation(() => Boolean)
+  @UseMiddleware(isAuth)
+  async addFavorite(@Arg("userId") userId: string, @Arg("code") code: string) {
+    return UserService.addFavorite(userId, code);
+  }
+
+  @Mutation(() => Boolean)
+  @UseMiddleware(isAuth)
+  async removeFavorite(
+    @Arg("userId") userId: string,
+    @Arg("code") code: string
+  ) {
+    return UserService.removeFavorite(userId, code);
   }
 }

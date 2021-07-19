@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useHistory } from 'react-router';
 import styled from 'styled-components';
 import NewUserCard from '../components/NewUserCard';
-import { useQuery, gql, useMutation } from '@apollo/client';
+import { useQuery, useMutation } from '@apollo/client';
 import { GET_USER_NAMES } from '../graphQL/Queries';
 import { CREATE_USER } from '../graphQL/Mutations';
 
@@ -45,6 +45,7 @@ const NewUser = () => {
 
   const create = async (username: string, password: string) => {
     const usernames: User[] = await data.getUsers;
+    console.log(usernames);
     if (!isUsernameInUse(username, usernames)) {
       createUser({
         variables: {

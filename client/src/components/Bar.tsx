@@ -14,7 +14,14 @@ function Bar({ showFavorites }: Props) {
         Finn.no Price Reduction
         <div>
           <Button onClick={showFavorites}>Vis favoritter</Button>
-          <Button onClick={() => history.push('/')}>Logg ut</Button>
+          <Button
+            onClick={() => {
+              history.push('/');
+              localStorage.clear();
+            }}
+          >
+            Logg ut
+          </Button>
         </div>
       </Toolbar>
     </AppBar>

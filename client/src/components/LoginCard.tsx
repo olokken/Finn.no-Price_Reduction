@@ -2,6 +2,7 @@ import React, { ChangeEvent, KeyboardEventHandler } from 'react';
 import { TextField, Button } from '@material-ui/core';
 import styled from 'styled-components';
 import { useHistory } from 'react-router';
+import { useQuery } from '@apollo/client';
 
 const LoginCardContainer = styled.div`
   width: 30rem;
@@ -30,7 +31,6 @@ const LoginCard = ({
   onChangePassword,
   onKeyDown,
 }: Props) => {
-  const history = useHistory();
   return (
     <LoginCardContainer>
       <h2>LOG IN</h2>
@@ -66,13 +66,6 @@ const LoginCard = ({
         onClick={onNewUser}
       >
         CREATE NEW USER
-      </Button>
-      <Button
-        style={{ width: '100%', marginTop: '15px', height: '50px' }}
-        variant="contained"
-        onClick={() => history.push('/mainPage')}
-      >
-        Continue as guest
       </Button>
     </LoginCardContainer>
   );

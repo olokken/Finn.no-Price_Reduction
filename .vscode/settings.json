@@ -1,5 +1,5 @@
 {
-  "python.pythonPath": "scraping/env/bin/python",
+  "python.pythonPath": "/usr/bin/python3",
   "[html]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },

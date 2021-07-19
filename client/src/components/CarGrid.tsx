@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { GridList, Modal } from '@material-ui/core';
+import { GridList } from '@material-ui/core';
 import Car from '../interfaces/Car';
 import styled from 'styled-components';
 import CarCard from './CarCard';
@@ -14,9 +14,11 @@ const Container = styled.div`
 
 interface Props {
   cars: Car[];
+  addFavorite: (id: string) => void;
+  removeFavorite: (id: string) => void;
 }
 
-const CarGrid = ({ cars }: Props) => {
+const CarGrid = ({ cars, addFavorite, removeFavorite }: Props) => {
   const [page, setPage] = useState<number>(1);
   const [currentCars, setCurrentCars] = useState<Car[]>(cars);
   const [clickedCar, setClickedCar] = useState<Car>();
@@ -63,9 +65,11 @@ const CarGrid = ({ cars }: Props) => {
       />
       {clickedCar && (
         <CarModal
+          removeFavorite={removeFavorite}
           car={clickedCar}
           open={openModal}
           close={() => setOpenModal(false)}
+          addFavorite={addFavorite}
         ></CarModal>
       )}
     </Container>

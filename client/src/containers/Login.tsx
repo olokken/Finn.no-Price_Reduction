@@ -1,10 +1,9 @@
-import React, { ChangeEvent, useContext, useEffect, useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import styled from 'styled-components';
 import LoginCard from '../components/LoginCard';
 import { useHistory } from 'react-router-dom';
-import { LOGIN } from '../graphQL/Queries';
-import { useQuery } from '@apollo/client';
-import { UserContext } from '../App';
+import { LOGIN } from '../graphQL/Mutations';
+import { useMutation } from '@apollo/client';
 
 const LoginContainer = styled.div`
   width: 100%;
@@ -29,16 +28,18 @@ const Login = () => {
   const history = useHistory();
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const { setUser } = useContext(UserContext);
-  const { loading, data } = useQuery(LOGIN, {
-    variables: { username: username, password: password },
-  });
+  const [login] = useMutation(LOGIN);
 
-  const onLogin = () => {
-    if (data) {
-      localStorage.setItem('id', data.login.id);
-      setUser(data.login.id);
+  const onLogin = async () => {
+    try {
+      const response = await login({
+        variables: { username: username, password: password },
+      });
+      window.localStorage.setItem('token', response.data.login['accessToken']);
+      window.localStorage.setItem('id', response.data.login['id']);
       history.push('/mainPage');
+    } catch (e) {
+      alert((e as Error).message);
     }
   };
 
